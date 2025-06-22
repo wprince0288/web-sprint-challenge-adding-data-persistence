@@ -1,32 +1,20 @@
 // build your server here and require it from index.js
 const express = require('express');
 
-const tasksRouter = require('./task/router');
-const resourcesRouter = require('./resource/router');
-const projectsRouter = require('./project/router');
+const taskRouter = require('./task/router');
+const resourceRouter = require('./resource/router');
+const projectRouter = require('./project/router');
 
 const server = express();
 
 server.use(express.json());
 
-server.use('/api/task', tasksRouter);
-server.use('/api/resource', resourcesRouter);
-server.use('/api/project', projectsRouter);
-
-server.get('/', (req, res) => {
-    res.json({ message: 'Server is running!' });
-});
-
-server.use('*', (req, res) => {
-    res.status(404).json({ message: 'Not found' });
-});
+server.use('/api/projects', projectRouter);
+server.use('/api/resources', resourceRouter);
+server.use('/api/tasks', taskRouter);
 
 server.use((err, req, res, next) => {
-    console.error(err);
-    res.status(err.status || 500).json({
-        message: err.message || 'Internal server error',
-        stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
-    });
+    res.status(500).json({ message: err.message });
 });
 
 module.exports = server;

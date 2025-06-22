@@ -4,22 +4,22 @@ const Tasks = require('./model')
 
 const router = express.Router()
 
-router.get("/", async (req, res, next) => {
+router.get('/', async (req, res, next) => {
     try {
-        const tasks = await Tasks.getAll()
+        const tasks = await Tasks.getAllTasks()
         res.json(tasks)
     } catch (err) {
         next(err)
     }
-})
+});
 
-router.post("/", async (req, res, next) => {
+router.post('/', async (req, res, next) => {
     try {
-        const newTask = await Tasks.create(req.body)
+        const newTask = await Tasks.createTask(req.body)
         res.status(201).json(newTask)
     } catch (err) {
         next(err)
     }
-})
+});
 
-module.exports = router
+module.exports = router;
